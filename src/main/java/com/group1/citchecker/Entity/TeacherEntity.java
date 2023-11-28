@@ -36,7 +36,7 @@ public class TeacherEntity {
 	
 	private String department;
 	
-	@OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "teacher", cascade = CascadeType.MERGE)
     private List<ClassEntity> classes;
 
 	public TeacherEntity() {
@@ -106,23 +106,9 @@ public class TeacherEntity {
         return classes;
     }
 
-    public void setClasses(List<ClassEntity> classes) {
-        this.classes = classes;
-    }
-
 	public void addClass(ClassEntity newClass) {
-		if (newClass != null) {
-            // Ensure that the classes list is initialized
-            if (classes == null) {
-                classes = new ArrayList<>();
-            }
-
-            // Add the new class to the teacher's classes list
-            classes.add(newClass);
-
-            // Set the teacher for the new class
-            newClass.setTeacher(this);
-        }
-    }
+		// TODO Auto-generated method stub
 		
+	}
+
 }

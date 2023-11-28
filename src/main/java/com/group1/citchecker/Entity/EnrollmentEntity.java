@@ -33,6 +33,9 @@ public class EnrollmentEntity {
     public EnrollmentEntity(ClassEntity classEntity, StudentEntity studentEntity) {
         this.classEntity = classEntity;
         this.studentEntity = studentEntity;
+        
+        classEntity.addEnrollment(this);
+        studentEntity.addEnrollment(this);
     }
 
     public int getId() {

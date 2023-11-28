@@ -1,5 +1,6 @@
 package com.group1.citchecker.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,99 +14,105 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="tblstudent")
+@Table(name = "tblstudent")
 public class StudentEntity {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="student_id")
-	private int sid;
-	
-	@Column(name="firstname")
-	private String fname;
-	
-	@Column(name="lastname")
-	private String lname;
-	
-	private String email;
-	
-	private String password;
-	
-	private String program;
 
-	
-	 @OneToMany(mappedBy = "studentEntity", cascade = CascadeType.ALL)
-	    private List<EnrollmentEntity> enrollments;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
+    private int sid;
 
-	public StudentEntity() {
-		super();
-	}
+    @Column(name = "firstname")
+    private String fname;
 
-	public StudentEntity(int sid, String fname, String lname, String gender, String email, 
-			String password, String program) {
-		super();
-		this.sid = sid;
-		this.fname = fname;
-		this.lname = lname;
-		this.email = email;
-		this.password = password;
-		this.program = program;
-	}
+    @Column(name = "lastname")
+    private String lname;
 
-	public int getSid() {
-		return sid;
-	}
+    private String email;
 
-	public void setSid(int sid) {
-		this.sid = sid;
-	}
+    private String password;
 
-	public String getFname() {
-		return fname;
-	}
+    private String program;
 
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
+    @OneToMany(mappedBy = "studentEntity", cascade = CascadeType.MERGE)
+    private List<EnrollmentEntity> enrollments;
 
-	public String getLname() {
-		return lname;
-	}
-
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	public String getProgram() {
-		return program;
-	}
-	public void setProgram(String program) {
-		this.program = program;
-	}
-	
-
-	 public List<EnrollmentEntity> getEnrollments() {
-	        return enrollments;
+    public StudentEntity() {
+        super();
     }
 
-	public void setEnrollments(List<EnrollmentEntity> enrollments) {
-	        this.enrollments = enrollments;
-	}
-	
-	
+    public StudentEntity(int sid, String fname, String lname, String email, String password, String program) {
+        super();
+        this.sid = sid;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.password = password;
+        this.program = program;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+
+    public List<EnrollmentEntity> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<EnrollmentEntity> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public void addEnrollment(EnrollmentEntity enrollmentEntity) {
+        if (enrollments == null) {
+            enrollments = new ArrayList<>();
+        }
+
+        enrollments.add(enrollmentEntity);
+        enrollmentEntity.setStudentEntity(this);
+    }
 }

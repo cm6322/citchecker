@@ -38,12 +38,28 @@ public class ClassEntity {
 	private String time;
 	
 	
-	@OneToMany(mappedBy = "classEntity", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "classEntity", cascade = CascadeType.MERGE)
     private List<EnrollmentEntity> enrollments;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "teacher_id")
 	private TeacherEntity teacher;
+	
+	public void addEnrollment(EnrollmentEntity enrollment) {
+		if (enrollment != null) {
+	        // Ensure that the enrollments list is initialized
+	        if (enrollments == null) {
+	            enrollments = new ArrayList<>();
+	        }
+
+	        // Add the new enrollment to the class's enrollments list
+	        enrollments.add(enrollment);
+
+	        // Set the class for the new enrollment
+	        enrollment.setClassEntity(this);
+	    }
+		
+	}
 
 	public ClassEntity() {
 		super();
@@ -106,48 +122,9 @@ public class ClassEntity {
 		this.time = time;
 	}
 
-	
-	public List<EnrollmentEntity> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(List<EnrollmentEntity> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-	public TeacherEntity getTeacher() {
-        return teacher;
-    }
-
-	public void setTeacher(TeacherEntity teacher) {
-        if (teacher != null) {
-            // Ensure that the teacher's list of classes is initialized
-            if (teacher.getClasses() == null) {
-                teacher.setClasses(new ArrayList<>());
-            }
-
-            // Add this class to the teacher's list of classes
-            teacher.getClasses().add(this);
-        }
-
-        this.teacher = teacher;
-    }
-
-	public void addEnrollment(EnrollmentEntity enrollment) {
-		if (enrollment != null) {
-	        // Ensure that the enrollments list is initialized
-	        if (enrollments == null) {
-	            enrollments = new ArrayList<>();
-	        }
-
-	        // Add the new enrollment to the class's enrollments list
-	        enrollments.add(enrollment);
-
-	        // Set the class for the new enrollment
-	        enrollment.setClassEntity(this);
-	    }
+	public void setTeacher(TeacherEntity teacher2) {
+		// TODO Auto-generated method stub
 		
 	}
-	
 
 }
