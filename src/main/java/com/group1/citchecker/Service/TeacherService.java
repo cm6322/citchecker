@@ -7,14 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.citchecker.Entity.ClassEntity;
+import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
+import com.group1.citchecker.Repository.ClassRepository;
 import com.group1.citchecker.Repository.TeacherRepository;
 
 @Service
 public class TeacherService {
 
+    private final TeacherRepository trepo;
+    private final ClassRepository crepo;
+
     @Autowired
-    private TeacherRepository trepo;
+    public TeacherService(TeacherRepository trepo, ClassRepository crepo) {
+        this.trepo = trepo;
+        this.crepo = crepo;
+    }
+
+    public TeacherEntity getTeacherById(int tid) {
+        return trepo.findById(tid).orElse(null);
+    }
 
     // Create or insert a teacher record in tblteacher
     public TeacherEntity insertTeacher(TeacherEntity teacher) {
@@ -32,7 +44,7 @@ public class TeacherService {
         TeacherEntity teacher = new TeacherEntity();
         try {
             // Search for the teacher by id
-            teacher = trepo.findById(tid).get();
+            teacher = trepo.findById(tid).orElseThrow(() -> new NoSuchElementException("Teacher " + tid + " does not exist"));
 
             // Update the record
             teacher.setFname(newTeacherDetails.getFname());
@@ -42,8 +54,6 @@ public class TeacherService {
             teacher.setDepartment(newTeacherDetails.getDepartment());
             // Update other fields as needed
 
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException("Teacher " + tid + " does not exist!");
         } finally {
             return trepo.save(teacher);
         }
@@ -53,7 +63,7 @@ public class TeacherService {
     public String deleteTeacher(int tid) {
         String msg = "";
 
-        if (trepo.findById(tid).isPresent()) {
+        if (trepo.existsById(tid)) {
             trepo.deleteById(tid);
             msg = "Teacher " + tid + " is successfully deleted!";
         } else
@@ -61,25 +71,34 @@ public class TeacherService {
         return msg;
     }
 
-    public TeacherEntity addClass(int tid, ClassEntity newClass) {
+    public void addClassToTeacher(int tid, ClassEntity newClass) {
         TeacherEntity teacher = trepo.findById(tid).orElse(null);
-        if (teacher != null) {
-            // Add the new class to the teacher's classes list
-            teacher.getClasses().add(newClass);
-            // Set the teacher for the new class
-            newClass.setTeacher(teacher);
-            // Save both the teacher and the new class entities
+
+        if (teacher != null && newClass != null) {
+            // Add the class to the teacher's list
+            teacher.addClass(newClass);
+
+            // Save the teacher with the updated class list
             trepo.save(teacher);
-            return teacher; // Return the updated teacher
+
+            // Update the class with the teacher information
+            newClass.setTeacher(teacher);
+            crepo.save(newClass);
+        } else {
+            // Handle the case where either the teacher or the class is null
+            if (teacher == null) {
+                // Handle null teacher
+                System.out.println("Teacher with ID " + tid + " not found");
+            }
+            if (newClass == null) {
+                // Handle null class
+                System.out.println("Class is null");
+            }
         }
-        return null;
     }
 
-	public TeacherEntity getTeacherById(int tid) {
-		 return trepo.findById(tid).orElse(null);
-	}
+    public void enrollStudent(int tid, EnrollmentEntity enrollment) {
+        // TODO: Implement enrollment logic
+    }
 
-
-
-  
 }

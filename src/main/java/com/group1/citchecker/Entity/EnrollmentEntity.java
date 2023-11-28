@@ -10,49 +10,52 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tblenrollement")
+@Table(name = "tblenrollment")
 public class EnrollmentEntity {
-	
-	 	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    @Column(name = "enrollment_id")
-	    private int id;
 
-	    @ManyToOne
-	    @JoinColumn(name = "class_id")
-	    private ClassEntity classEntity;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "enrollment_id")
+    private int id;
 
-	    @ManyToOne
-	    @JoinColumn(name = "student_id")
-	    private StudentEntity studentEntity;
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private ClassEntity classEntity;
 
-	    public EnrollmentEntity() {
-	        // Default constructor
-	    }
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private StudentEntity studentEntity;
 
-	    public EnrollmentEntity(ClassEntity classEntity, StudentEntity studentEntity) {
-	        this.classEntity = classEntity;
-	        this.studentEntity = studentEntity;
-	    }
+    public EnrollmentEntity() {
+        // Default constructor
+    }
 
-		public Object getClassEntity() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+    public EnrollmentEntity(ClassEntity classEntity, StudentEntity studentEntity) {
+        this.classEntity = classEntity;
+        this.studentEntity = studentEntity;
+    }
 
-		public Object getStudentEntity() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+    public int getId() {
+        return id;
+    }
 
-		public void setClassEntity(Object classEntity2) {
-			// TODO Auto-generated method stub
-			
-		}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-		public void setStudentEntity(Object studentEntity2) {
-			// TODO Auto-generated method stub
-			
-		}
+    public ClassEntity getClassEntity() {
+        return classEntity;
+    }
 
+    public void setClassEntity(ClassEntity classEntity) {
+        this.classEntity = classEntity;
+    }
+
+    public StudentEntity getStudentEntity() {
+        return studentEntity;
+    }
+
+    public void setStudentEntity(StudentEntity studentEntity) {
+        this.studentEntity = studentEntity;
+    }
 }

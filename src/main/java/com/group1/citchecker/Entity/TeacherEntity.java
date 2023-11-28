@@ -1,6 +1,9 @@
 package com.group1.citchecker.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,11 +36,12 @@ public class TeacherEntity {
 	
 	private String department;
 	
-	@OneToMany(mappedBy = "teacher")
+	@OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<ClassEntity> classes;
 
 	public TeacherEntity() {
 		super();
+		this.classes = new ArrayList<>();
 	}
 
 	public TeacherEntity(int tid, String fname, String lname, String email, 
@@ -107,9 +111,18 @@ public class TeacherEntity {
     }
 
 	public void addClass(ClassEntity newClass) {
-		// TODO Auto-generated method stub
-		
-	}
-		
+		if (newClass != null) {
+            // Ensure that the classes list is initialized
+            if (classes == null) {
+                classes = new ArrayList<>();
+            }
 
+            // Add the new class to the teacher's classes list
+            classes.add(newClass);
+
+            // Set the teacher for the new class
+            newClass.setTeacher(this);
+        }
+    }
+		
 }

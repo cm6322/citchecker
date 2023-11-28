@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,10 +32,7 @@ public class StudentEntity {
 	private String password;
 	
 	private String program;
-	
-	@ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private TeacherEntity teacher;
+
 	
 	 @OneToMany(mappedBy = "studentEntity", cascade = CascadeType.ALL)
 	    private List<EnrollmentEntity> enrollments;
@@ -103,13 +98,6 @@ public class StudentEntity {
 		this.program = program;
 	}
 	
-	public TeacherEntity getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(TeacherEntity teacher) {
-        this.teacher = teacher;
-    }
 
 	 public List<EnrollmentEntity> getEnrollments() {
 	        return enrollments;

@@ -26,30 +26,23 @@ public class EnrollmentService {
     }
 
     // Update an enrollment record
-    @SuppressWarnings("finally")
     public EnrollmentEntity updateEnrollment(int id, EnrollmentEntity newEnrollmentDetails) {
-        EnrollmentEntity enrollment = new EnrollmentEntity();
-        try {
-            // Search for the enrollment by id
-            enrollment = erepo.findById(id).get();
+        EnrollmentEntity enrollment = erepo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Enrollment " + id + " does not exist!"));
 
-            // Update the record
-            // Add additional fields to update as needed
-            enrollment.setClassEntity(newEnrollmentDetails.getClassEntity());
-            enrollment.setStudentEntity(newEnrollmentDetails.getStudentEntity());
+        // Update the record
+        // Add additional fields to update as needed
+        enrollment.setClassEntity(newEnrollmentDetails.getClassEntity());
+        enrollment.setStudentEntity(newEnrollmentDetails.getStudentEntity());
 
-        } catch (NoSuchElementException ex) {
-            throw new NoSuchElementException("Enrollment " + id + " does not exist!");
-        } finally {
-            return erepo.save(enrollment);
-        }
+        return erepo.save(enrollment);
     }
 
     // Delete an enrollment record
     public String deleteEnrollment(int id) {
         String msg = "";
 
-        if (erepo.findById(id).isPresent()) {
+        if (erepo.existsById(id)) {
             erepo.deleteById(id);
             msg = "Enrollment " + id + " is successfully deleted!";
         } else

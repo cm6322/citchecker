@@ -1,5 +1,6 @@
 package com.group1.citchecker.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,9 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-
-
 
 
 @Entity
@@ -121,9 +119,35 @@ public class ClassEntity {
         return teacher;
     }
 
-    public void setTeacher(TeacherEntity teacher) {
+	public void setTeacher(TeacherEntity teacher) {
+        if (teacher != null) {
+            // Ensure that the teacher's list of classes is initialized
+            if (teacher.getClasses() == null) {
+                teacher.setClasses(new ArrayList<>());
+            }
+
+            // Add this class to the teacher's list of classes
+            teacher.getClasses().add(this);
+        }
+
         this.teacher = teacher;
     }
+
+	public void addEnrollment(EnrollmentEntity enrollment) {
+		if (enrollment != null) {
+	        // Ensure that the enrollments list is initialized
+	        if (enrollments == null) {
+	            enrollments = new ArrayList<>();
+	        }
+
+	        // Add the new enrollment to the class's enrollments list
+	        enrollments.add(enrollment);
+
+	        // Set the class for the new enrollment
+	        enrollment.setClassEntity(this);
+	    }
+		
+	}
 	
 
 }

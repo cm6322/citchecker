@@ -3,15 +3,19 @@ package com.group1.citchecker.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.group1.citchecker.Entity.ClassEntity;
+import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.ClassService;
 import com.group1.citchecker.Service.TeacherService;
 
 @RestController
 @RequestMapping("/class")
+
 public class ClassController {
 
     @Autowired
@@ -19,9 +23,10 @@ public class ClassController {
     private final TeacherService teacherService;
     
     @Autowired
-    public ClassController(ClassService classService, TeacherService teacherService) {
+    public ClassController(ClassService classService, TeacherService teacherService ){
         this.classService = classService;
         this.teacherService = teacherService;
+        
     }
 
     @PostMapping("/insertClass")
@@ -35,15 +40,15 @@ public class ClassController {
     }
 
     // Update class record
-    @PutMapping("/updateClass/{sid}")
-    public ClassEntity updateClass(@PathVariable int sid, @RequestBody ClassEntity newClassDetails) {
-        return classService.updateClass(sid, newClassDetails);
+    @PutMapping("/updateClass/{cid}")
+    public ClassEntity updateClass(@PathVariable int cid, @RequestBody ClassEntity newClassDetails) {
+        return classService.updateClass(cid, newClassDetails);
     }
 
     // Delete class record
-    @DeleteMapping("/deleteClass/{sid}")
-    public String deleteClass(@PathVariable int sid) {
-        return classService.deleteClass(sid);
+    @DeleteMapping("/deleteClass/{cid}")
+    public String deleteClass(@PathVariable int cid) {
+        return classService.deleteClass(cid);
     }
     
     @PostMapping("/{cid}/assignteacher/{tid}")
@@ -62,5 +67,12 @@ public class ClassController {
         } else {
             return "Class or teacher not found.";
         }
+    }
+    
+    @PostMapping("/{cid}/enroll")
+    public ResponseEntity<String> enrollStudent(@PathVariable int cid, @RequestBody EnrollmentEntity enrollment) {
+        // Implement enrollment logic, associate with the class
+        classService.enrollStudent(cid, enrollment);
+        return new ResponseEntity<>("Student enrolled successfully.", HttpStatus.OK);
     }
 }
