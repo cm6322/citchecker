@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.TeacherService;
 
@@ -54,13 +53,6 @@ public class TeacherController {
         } else {
             return new ResponseEntity<>("Teacher not found.", HttpStatus.NOT_FOUND);
         }
-    }
-    
-    @PostMapping("/{tid}/enroll")
-    public ResponseEntity<String> enrollStudent(@PathVariable int tid, @RequestBody EnrollmentEntity enrollment) {
-        // Implement enrollment logic, associate with the teacher
-        teacherService.enrollStudent(tid, enrollment);
-        return new ResponseEntity<>("Student enrolled successfully.", HttpStatus.OK);
     }
 
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Repository.ClassRepository;
 import com.group1.citchecker.Repository.TeacherRepository;
@@ -15,8 +14,13 @@ import com.group1.citchecker.Repository.TeacherRepository;
 @Service
 public class TeacherService {
 
-    private final TeacherRepository trepo;
-    private final ClassRepository crepo;
+	@Autowired
+	private ClassRepository crepo;
+	    
+	@Autowired
+	private TeacherRepository trepo;
+	    
+	    
 
     @Autowired
     public TeacherService(TeacherRepository trepo, ClassRepository crepo) {
@@ -95,10 +99,6 @@ public class TeacherService {
                 System.out.println("Class is null");
             }
         }
-    }
-
-    public void enrollStudent(int tid, EnrollmentEntity enrollment) {
-        // TODO: Implement enrollment logic
     }
 
 }

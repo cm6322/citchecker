@@ -3,12 +3,8 @@ package com.group1.citchecker.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.ClassService;
 import com.group1.citchecker.Service.TeacherService;
@@ -69,10 +65,4 @@ public class ClassController {
         }
     }
     
-    @PostMapping("/{cid}/enroll")
-    public ResponseEntity<String> enrollStudent(@PathVariable int cid, @RequestBody EnrollmentEntity enrollment) {
-        // Implement enrollment logic, associate with the class
-        classService.enrollStudent(cid, enrollment);
-        return new ResponseEntity<>("Student enrolled successfully.", HttpStatus.OK);
-    }
 }
