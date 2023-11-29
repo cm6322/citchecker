@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.citchecker.Entity.ClassEntity;
+import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Repository.ClassRepository;
 import com.group1.citchecker.Repository.TeacherRepository;
@@ -82,5 +83,10 @@ public class ClassService {
     public void saveTeacher(TeacherEntity teacherEntity) {
         trepo.save(teacherEntity);
     }
+
+	public void enrollStudent(int cid, EnrollmentEntity enrollment) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

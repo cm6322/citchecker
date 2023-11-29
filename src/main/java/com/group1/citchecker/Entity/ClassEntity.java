@@ -89,4 +89,14 @@ public class ClassEntity {
 
     public void setTeacher(TeacherEntity teacherEntity) {
     }
+
+	public void setStudent(StudentEntity studentEntity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addEnrollment(EnrollmentEntity enrollmentEntity) {
+		// TODO Auto-generated method stub
+		
+	}
 }
