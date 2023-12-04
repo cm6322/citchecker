@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -32,6 +33,7 @@ public class ClassEntity {
     private String time;
 
     @ManyToOne
+    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacher;
     
     @ManyToMany
@@ -112,6 +114,10 @@ public class ClassEntity {
     }
 
     public void setTeacher(TeacherEntity teacherEntity) {
+    	 this.teacher = teacherEntity;
+         if (teacherEntity != null && !teacherEntity.getClasses().contains(this)) {
+             teacherEntity.addClass(this);
+         }
     }
 
 	public void setStudent(StudentEntity studentEntity) {

@@ -84,10 +84,6 @@ public class TeacherService {
 
             // Save the teacher with the updated class list
             trepo.save(teacher);
-
-            // Update the class with the teacher information
-            newClass.setTeacher(teacher);
-            crepo.save(newClass);
         } else {
             // Handle the case where either the teacher or the class is null
             if (teacher == null) {
