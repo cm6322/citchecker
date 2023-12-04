@@ -17,13 +17,11 @@ public class StudentService {
     @Autowired
     StudentRepository srepo;
     
-    @Autowired
-	private ClassRepository crepo;
+
     
     @Autowired
     public StudentService(StudentRepository srepo, ClassRepository crepo) {
         this.srepo = srepo;
-        this.crepo = crepo;
     }
     
     public StudentEntity getStudentById(int sid) {
@@ -72,29 +70,51 @@ public class StudentService {
             msg = "Student " + sid + " does not exist";
         return msg;
     }
-    public void addClassToStudent(int sid, ClassEntity newClass) {
-        StudentEntity student = srepo.findById(sid).orElse(null);
-
-        if (student!= null && newClass != null) {
-            // Add the class to the teacher's list
-            student.addClass(newClass);
-
-            // Save the teacher with the updated class list
-            srepo.save(student);
-
-            // Update the class with the teacher information
-            newClass.setStudent(student);
-            crepo.save(newClass);
+    public void addStudentsToClass(List<Integer> studentIds, ClassEntity newClass) {
+        if (studentIds != null && newClass != null) {
+            for (Integer studentId : studentIds) {
+                StudentEntity student = srepo.findById(studentId).orElse(null);
+                if (student != null) {
+                    student.addClass(newClass);
+                    srepo.save(student);
+                } else {
+                    // Handle null student
+                    System.out.println("Student with ID " + studentId + " not found.");
+                    // You might throw an exception or log the error depending on your requirements
+                }
+            }
         } else {
-            // Handle the case where either the teacher or the class is null
-            if (student== null) {
-                // Handle null teacher
-                System.out.println("Teacher with ID " + sid + " not found");
+            // Handle null studentIds or class
+            if (studentIds == null) {
+                System.out.println("List of studentIds is null.");
+                // You might throw an exception or log the error depending on your requirements
             }
             if (newClass == null) {
-                // Handle null class
-                System.out.println("Class is null");
+                System.out.println("ClassEntity is null.");
+                // You might throw an exception or log the error depending on your requirements
             }
         }
     }
+    
+    public void addClassToStudent(int sid, ClassEntity newClass) {
+        StudentEntity student = srepo.findById(sid).orElse(null);
+
+        if (student != null && newClass != null) {
+            student.addClass(newClass);
+            srepo.save(student);
+        } else {
+            // Handle null student or class
+            if (student == null) {
+                System.out.println("Student with ID " + sid + " not found.");
+                // You might throw an exception or log the error depending on your requirements
+            }
+            if (newClass == null) {
+                System.out.println("ClassEntity is null.");
+                // You might throw an exception or log the error depending on your requirements
+            }
+        }
+    }
+
+
+
 }

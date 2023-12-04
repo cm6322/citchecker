@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
@@ -32,7 +32,7 @@ public class StudentEntity {
 
     private String program;
     
-    @OneToMany
+    @ManyToMany
     private List<ClassEntity> classes;
 
     public StudentEntity() {
@@ -120,11 +120,6 @@ public class StudentEntity {
 
     public void setProgram(String program) {
         this.program = program;
-    }
-
-	public void addEnrollment(EnrollmentEntity enrollmentEntity) {
-		// TODO Auto-generated method stub
-		
-	}
+    }	
 
 }

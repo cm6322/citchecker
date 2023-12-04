@@ -1,6 +1,16 @@
 package com.group1.citchecker.Entity;
 
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name = "tblclass")
@@ -9,42 +19,48 @@ public class ClassEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "class_id")
-    private int sid;
+    private int cid;
 
     @Column(name = "subject_code")
     private String code;
 
     @Column(name = "course_name")
     private String course;
-
+    private String section;
     private String schedule;
     private String room;
     private String time;
 
     @ManyToOne
-    @JoinColumn(name = "teacher_id")
     private TeacherEntity teacher;
+    
+    @ManyToMany
+    private List<StudentEntity> students;
 
     public ClassEntity() {
         super();
+
     }
 
-    public ClassEntity(int sid, String code, String course, String schedule, String room, String time) {
+    public ClassEntity(int cid, String code, String course, String schedule, String room, String time, String section) {
         super();
-        this.sid = sid;
+        this.cid = cid;
         this.code = code;
         this.course = course;
+        this.section = section;
         this.schedule = schedule;
         this.room = room;
         this.time = time;
+      
+    }
+    
+  
+    public int getCid() {
+        return cid;
     }
 
-    public int getSid() {
-        return sid;
-    }
-
-    public void setSid(int sid) {
-        this.sid = sid;
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 
     public String getCode() {
@@ -61,6 +77,14 @@ public class ClassEntity {
 
     public void setCourse(String course) {
         this.course = course;
+    }
+    
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
     }
 
     public String getSchedule() {
@@ -94,9 +118,5 @@ public class ClassEntity {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void addEnrollment(EnrollmentEntity enrollmentEntity) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }

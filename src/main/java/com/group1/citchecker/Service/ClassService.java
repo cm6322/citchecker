@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.EnrollmentEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Repository.ClassRepository;
 import com.group1.citchecker.Repository.TeacherRepository;
@@ -38,9 +37,9 @@ public class ClassService {
     }
 
     // Update a class record
-    public ClassEntity updateClass(int sid, ClassEntity newClassDetails) {
-        ClassEntity classEntity = crepo.findById(sid)
-                .orElseThrow(() -> new NoSuchElementException("Class with ID " + sid + " does not exist"));
+    public ClassEntity updateClass(int cid, ClassEntity newClassDetails) {
+        ClassEntity classEntity = crepo.findById(cid)
+                .orElseThrow(() -> new NoSuchElementException("Class with ID " + cid + " does not exist"));
 
         // Update the record
         classEntity.setCode(newClassDetails.getCode());
@@ -55,12 +54,12 @@ public class ClassService {
     }
 
     // Delete a class record
-    public String deleteClass(int sid) {
-        if (crepo.existsById(sid)) {
-            crepo.deleteById(sid);
-            return "Class " + sid + " is successfully deleted!";
+    public String deleteClass(int cid) {
+        if (crepo.existsById(cid)) {
+            crepo.deleteById(cid);
+            return "Class " + cid + " is successfully deleted!";
         } else {
-            return "Class " + sid + " does not exist";
+            return "Class " + cid + " does not exist";
         }
     }
 
@@ -83,10 +82,5 @@ public class ClassService {
     public void saveTeacher(TeacherEntity teacherEntity) {
         trepo.save(teacherEntity);
     }
-
-	public void enrollStudent(int cid, EnrollmentEntity enrollment) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

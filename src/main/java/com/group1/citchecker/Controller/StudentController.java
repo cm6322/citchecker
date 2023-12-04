@@ -1,9 +1,7 @@
 package com.group1.citchecker.Controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,20 +39,24 @@ public class StudentController {
     public String deleteStudent(@PathVariable int sid) {
         return studentService.deleteStudent(sid);
     }
-    @PostMapping("/{sid}/assignClass")
-    public ResponseEntity<String> addClassToTeacher(
+    
+    @PostMapping("/{sid}/addClass")
+    public ResponseEntity<String> addClassToStudent(
             @PathVariable int sid,
             @RequestBody ClassEntity newClass
     ) {
-        StudentEntity student = studentService.getStudentById(sid);
-
-        if (student != null) {
-            // Optionally, you can set other properties of newClass here if needed
-        	studentService.addClassToStudent(sid, newClass);
-            return new ResponseEntity<>("Student added successfully.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Class not found.", HttpStatus.NOT_FOUND);
-        }
+        studentService.addClassToStudent(sid, newClass);
+        return ResponseEntity.ok("Class added to student successfully.");
     }
 
+
+    @PostMapping("/addStudentsToClass")
+    public ResponseEntity<String> addStudentsToClass(
+            @RequestParam List<Integer> sid,
+            @RequestBody ClassEntity newClass
+    ) {
+        studentService.addStudentsToClass(sid, newClass);
+        return ResponseEntity.ok("Classes added to students successfully.");
+    }
+  
 }
