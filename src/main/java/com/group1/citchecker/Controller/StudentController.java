@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.group1.citchecker.Entity.ClassEntity;
 import com.group1.citchecker.Entity.StudentEntity;
 import com.group1.citchecker.Service.StudentService;
@@ -47,16 +46,6 @@ public class StudentController {
     ) {
         studentService.addClassToStudent(sid, newClass);
         return ResponseEntity.ok("Class added to student successfully.");
-    }
-
-
-    @PostMapping("/addStudentsToClass")
-    public ResponseEntity<String> addStudentsToClass(
-            @RequestParam List<Integer> sid,
-            @RequestBody ClassEntity newClass
-    ) {
-        studentService.addStudentsToClass(sid, newClass);
-        return ResponseEntity.ok("Classes added to students successfully.");
     }
   
 }

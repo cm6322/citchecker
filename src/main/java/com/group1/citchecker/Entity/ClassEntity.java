@@ -1,17 +1,14 @@
 package com.group1.citchecker.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-
 
 @Entity
 @Table(name = "tblclass")
@@ -32,15 +29,13 @@ public class ClassEntity {
     private String room;
     private String time;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private TeacherEntity teacher;
     
     @ManyToMany
     private List<StudentEntity> students;
 
     public ClassEntity() {
         super();
+        this.students = new ArrayList<>();
 
     }
 
@@ -55,7 +50,9 @@ public class ClassEntity {
         this.time = time;
       
     }
-    
+    public List<StudentEntity> getStudents() {
+        return students;
+    }
   
     public int getCid() {
         return cid;
@@ -114,10 +111,7 @@ public class ClassEntity {
     }
 
     public void setTeacher(TeacherEntity teacherEntity) {
-    	 this.teacher = teacherEntity;
-         if (teacherEntity != null && !teacherEntity.getClasses().contains(this)) {
-             teacherEntity.addClass(this);
-         }
+    	 
     }
 
 	public void setStudent(StudentEntity studentEntity) {

@@ -2,14 +2,17 @@ package com.group1.citchecker.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.TeacherEntity;
+import com.group1.citchecker.Entity.StudentEntity;
 import com.group1.citchecker.Repository.ClassRepository;
-import com.group1.citchecker.Repository.TeacherRepository;
+import com.group1.citchecker.Repository.StudentRepository;
+
 
 @Service
 public class ClassService {
@@ -18,12 +21,14 @@ public class ClassService {
     private ClassRepository crepo;
     
     @Autowired
-    private TeacherRepository trepo;
+    private StudentRepository srepo;
+
     
     @Autowired
-    public ClassService(ClassRepository crepo,TeacherRepository trepo) {
+    public ClassService(ClassRepository crepo,StudentRepository srepo) {
         this.crepo = crepo;
-        this.trepo = trepo;
+        this.srepo = srepo;
+       
     }
 
     // Create or insert a class record in tblclass
@@ -62,25 +67,19 @@ public class ClassService {
             return "Class " + cid + " does not exist";
         }
     }
+    public void addStudentsToClass(List<Integer> sid, int cid) {
+        Optional<ClassEntity> optionalClass = crepo.findById(cid);
 
-    // Get a class by ID
-    public ClassEntity getClassById(int cid) {
-        return crepo.findById(cid).orElse(null);
+        if (optionalClass.isPresent()) {
+            ClassEntity schoolClass = optionalClass.get();
+            
+            List<StudentEntity> students = srepo.findAllById(sid);
+            schoolClass.getStudents().addAll(students);
+
+            crepo.save(schoolClass);
+        } else {
+            // Handle class not found
+            throw new EntityNotFoundException("Class with ID " + cid + " not found.");
+        }
     }
-
-    // Save a class
-    public void saveClass(ClassEntity classEntity) {
-        crepo.save(classEntity);
-    }
-
-    // Get a teacher by ID
-    public TeacherEntity getTeacherById(int tid) {
-        return trepo.findById(tid).orElse(null);
-    }
-
-    // Save a teacher
-    public void saveTeacher(TeacherEntity teacherEntity) {
-        trepo.save(teacherEntity);
-    }
-
 }
