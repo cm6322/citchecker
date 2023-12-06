@@ -2,12 +2,15 @@ package com.group1.citchecker.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -34,6 +37,9 @@ public class StudentEntity {
     
     @ManyToMany
     private List<ClassEntity> classes;
+    
+    @OneToMany(mappedBy = "students", cascade = CascadeType.ALL)
+    private List<AttendanceEntity> attendances;
 
     public StudentEntity() {
         super();

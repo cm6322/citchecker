@@ -115,7 +115,6 @@ public class ClassEntity {
     }
 
 	public void setStudent(StudentEntity studentEntity) {
-		// TODO Auto-generated method stub
 		
 	}
 	
