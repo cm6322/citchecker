@@ -3,10 +3,12 @@ package com.group1.citchecker.Controller;
 import com.group1.citchecker.Entity.AttendanceEntity;
 import com.group1.citchecker.Service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/attendance")
@@ -40,14 +42,18 @@ public class AttendanceController {
     }
 
     @PostMapping("/mark")
-    public ResponseEntity<String> markAttendance(@RequestBody AttendanceEntity attendance) {
-    	 try {
-             attendanceService.markAttendance(attendance);
-             return new ResponseEntity<>("Attendance marked successfully!", HttpStatus.OK);
-         } catch (Exception e) {
-             return new ResponseEntity<>("Error marking attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-         }
+    public ResponseEntity<String> markAttendance(@RequestBody AttendanceEntity attendance) throws NoSuchElementException {
+    	  try {
+    	        attendanceService.markAttendance(attendance);
+    	        return new ResponseEntity<>("Attendance marked successfully!", HttpStatus.OK);
+    	    } catch (DataIntegrityViolationException e) {
+    	        return new ResponseEntity<>("Error marking attendance: Foreign key constraint violation. Check if the associated class or student exists.", HttpStatus.BAD_REQUEST);
+    	    } catch (RuntimeException e) {
+    	        return new ResponseEntity<>("Error marking attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	    } catch (Exception e) {
+    	        return new ResponseEntity<>("Attendance marked unsuccessfully: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    	    }
+    
     }
-
-    // You can add more endpoints as needed, e.g., endpoints to get attendance by class, student, or date.
+    
 }

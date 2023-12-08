@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.group1.citchecker.Entity.AttendanceEntity;
 import com.group1.citchecker.Repository.AttendanceRepository;
@@ -49,12 +50,15 @@ public class AttendanceService {
 
 	    public void markAttendance(AttendanceEntity attendance) {
 	    	 try {
-	             arepo.save(attendance);
-	             System.out.println("Attendance marked successfully!");
-	         } catch (Exception e) {
-	             System.out.println("Error marking attendance: " + e.getMessage());
-	             // You can log the exception or take other actions based on your application's requirements.
-	         }
+	    	        arepo.save(attendance);
+	    	        System.out.println("Attendance marked successfully!");
+	    	    } catch (DataIntegrityViolationException e) {
+	    	        System.out.println("Error marking attendance: Foreign key constraint violation. Check if the associated class or student exists.");
+	    	        throw e; // rethrow the exception to let it propagate up
+	    	    } catch (Exception e) {
+	    	        System.out.println("Error marking attendance");
+	    	        throw e; // rethrow the exception to let it propagate up
+	    	    }
 	    }
 
 		public AttendanceEntity updateAttendance(int id, AttendanceEntity newAttendanceDetails) {

@@ -27,6 +27,11 @@ public class TeacherController {
     public List<TeacherEntity> getAllTeachers() {
         return teacherService.getAllTeachers();
     }
+    
+    @GetMapping("/teacherbyID/{tid}")
+    public TeacherEntity getTeacherById(@PathVariable int tid) {
+        return teacherService.getTeacherById(tid);
+    }
 
     // Update teacher record
     @PutMapping("/updateTeacher/{tid}")
@@ -39,7 +44,7 @@ public class TeacherController {
     public String deleteTeacher(@PathVariable int tid) {
         return teacherService.deleteTeacher(tid);
     }
-    @PostMapping("/{tid}/addClass")
+    @PostMapping("/{tid}/joinClass")
     public ResponseEntity<String> addClassToTeacher(
             @PathVariable int tid,
             @RequestBody ClassEntity newClass

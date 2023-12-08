@@ -38,9 +38,6 @@ public class StudentEntity {
     @ManyToMany
     private List<ClassEntity> classes;
     
-    @OneToMany(mappedBy = "students", cascade = CascadeType.ALL)
-    private List<AttendanceEntity> attendances;
-
     public StudentEntity() {
         super();
         this.classes = new ArrayList<>();
@@ -57,9 +54,6 @@ public class StudentEntity {
         this.classes = new ArrayList<>();
     }
     
-    public List<ClassEntity> getClasses() {
-        return classes;
-    }
 
     public void setClasses(List<ClassEntity> classes) {
         this.classes = classes;
