@@ -1,9 +1,8 @@
 package com.group1.citchecker.Service;
 
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -49,19 +48,20 @@ public class AttendanceService {
 	        return arepo.findById(id).orElse(null);
 	    }
 
+	    //Mark the Attendance
 	    public void markAttendance(AttendanceEntity attendance) {
 	    	 try {
 	    	        arepo.save(attendance);
 	    	        System.out.println("Attendance marked successfully!");
-	    	    } catch (DataIntegrityViolationException e) {
+	    	    } catch (NoSuchElementException e) {
 	    	        System.out.println("Error marking attendance: Foreign key constraint violation. Check if the associated class or student exists.");
-	    	        throw e; // rethrow the exception to let it propagate up
+	    	        throw e; 
 	    	    } catch (Exception e) {
 	    	        System.out.println("Error marking attendance");
-	    	        throw e; // rethrow the exception to let it propagate up
+	    	        throw e;
 	    	    }
 	    }
-
+	    //Update attendance records
 		public AttendanceEntity updateAttendance(int id, AttendanceEntity newAttendanceDetails) {
 			 AttendanceEntity attendanceEntity = arepo.findById(id)
 		                .orElseThrow(() -> new NoSuchElementException("Attendance with ID " + id + " does not exist"));
@@ -73,7 +73,9 @@ public class AttendanceService {
 		        // Update other fields as needed
 
 		        return arepo.save(attendanceEntity);
-		} 
+		}
+		
+		//Retrieve a list of attendance record based on student ID
 		public List<AttendanceEntity> getAttendanceByStudentId(int sid) {
 		    return arepo.findByStudents_Sid(sid);
 		}

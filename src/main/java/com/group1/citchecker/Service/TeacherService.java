@@ -67,8 +67,10 @@ public class TeacherService {
             msg = "Teacher " + tid + " does not exist";
         return msg;
     }
-
-    public void addClassToTeacher(int tid, ClassEntity newClass) {
+    
+    
+    //join teacher into a class
+    public void joinTeacherToClass(int tid, ClassEntity newClass) {
         TeacherEntity teacher = trepo.findById(tid).orElse(null);
 
         if (teacher != null && newClass != null) {

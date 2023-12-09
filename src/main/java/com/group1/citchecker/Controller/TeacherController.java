@@ -44,6 +44,8 @@ public class TeacherController {
     public String deleteTeacher(@PathVariable int tid) {
         return teacherService.deleteTeacher(tid);
     }
+    
+    //Join Teacher to a class
     @PostMapping("/{tid}/joinClass")
     public ResponseEntity<String> addClassToTeacher(
             @PathVariable int tid,
@@ -53,8 +55,8 @@ public class TeacherController {
 
         if (teacher != null) {
             // Optionally, you can set other properties of newClass here if needed
-            teacherService.addClassToTeacher(tid, newClass);
-            return new ResponseEntity<>("Class added to teacher successfully.", HttpStatus.OK);
+            teacherService.joinTeacherToClass(tid, newClass);
+            return new ResponseEntity<>("Teacher joined successfully.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Teacher not found.", HttpStatus.NOT_FOUND);
         }

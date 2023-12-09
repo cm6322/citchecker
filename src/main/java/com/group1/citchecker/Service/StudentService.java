@@ -70,22 +70,22 @@ public class StudentService {
             msg = "Student " + sid + " does not exist";
         return msg;
     }
-    public void addStudentsToClass(List<Integer> studentIds, ClassEntity newClass) {
-        if (studentIds != null && newClass != null) {
-            for (Integer studentId : studentIds) {
+    public void addStudentsToClass(List<Integer> sid, ClassEntity newClass) {
+        if (sid != null && newClass != null) {
+            for (Integer studentId : sid) {
                 StudentEntity student = srepo.findById(studentId).orElse(null);
                 if (student != null) {
                     student.addClass(newClass);
                     srepo.save(student);
                 } else {
                     // Handle null student
-                    System.out.println("Student with ID " + studentId + " not found.");
+                    System.out.println("Student with ID " + sid + " not found.");
                     // You might throw an exception or log the error depending on your requirements
                 }
             }
         } else {
             // Handle null studentIds or class
-            if (studentIds == null) {
+            if (sid == null) {
                 System.out.println("List of studentIds is null.");
                 // You might throw an exception or log the error depending on your requirements
             }
