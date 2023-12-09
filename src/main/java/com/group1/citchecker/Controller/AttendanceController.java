@@ -36,7 +36,7 @@ public class AttendanceController {
         return attendanceService.deleteAttendance(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/byId/{id}")
     public AttendanceEntity getAttendanceById(@PathVariable int id) {
         return attendanceService.getAttendanceById(id);
     }
@@ -54,6 +54,11 @@ public class AttendanceController {
     	        return new ResponseEntity<>("Attendance marked unsuccessfully: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     	    }
     
+    }
+    
+    @GetMapping("/byStudentId/{sid}")
+    public List<AttendanceEntity> getAttendanceByStudentId(@PathVariable int sid) {
+        return attendanceService.getAttendanceByStudentId(sid);
     }
     
 }

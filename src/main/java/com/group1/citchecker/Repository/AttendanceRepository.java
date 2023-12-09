@@ -1,4 +1,5 @@
 package com.group1.citchecker.Repository;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +9,10 @@ import com.group1.citchecker.Entity.AttendanceEntity;
 @Repository
 public interface AttendanceRepository extends JpaRepository <AttendanceEntity, Integer> {
 
-	List<AttendanceEntity> findByStudents_SidAndDate(int sid, String date);
+	List<AttendanceEntity> findByClasses_CidAndDate(int cid, LocalDate date);
 
-	List<AttendanceEntity> findByClasses_CidAndDate(int cid, String date);
+	List<AttendanceEntity> findByStudents_Sid(int sid);
+
 
 	
 

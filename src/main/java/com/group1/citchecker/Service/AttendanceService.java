@@ -1,5 +1,6 @@
 package com.group1.citchecker.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -72,6 +73,9 @@ public class AttendanceService {
 		        // Update other fields as needed
 
 		        return arepo.save(attendanceEntity);
-		}    
+		} 
+		public List<AttendanceEntity> getAttendanceByStudentId(int sid) {
+		    return arepo.findByStudents_Sid(sid);
+		}
 	    
 }
