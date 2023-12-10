@@ -1,6 +1,7 @@
 package com.group1.citchecker.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.group1.citchecker.Entity.ClassEntity;
+import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.ClassService;
 
 @RestController
@@ -27,14 +29,22 @@ public class ClassController {
         
     }
 
+    // Insert class
     @PostMapping("/insertClass")
     public ClassEntity insertClass(@RequestBody ClassEntity classes) {
         return classService.insertClass(classes);
     }
 
+    //Get all classes
     @GetMapping("/getAllClasses")
     public List<ClassEntity> getAllClasses() {
         return classService.getAllClasses();
+    }
+
+    // Get class by id
+    @GetMapping("/classbyId/{cid}")
+    public ClassEntity classById(@PathVariable int cid) {
+        return classService.getClassById(cid);
     }
 
     // Update class record
@@ -64,7 +74,13 @@ public class ClassController {
                     .body("Error adding students to class");
         }
     }
-    
-    
+    //Set Teacher for Class using tid and cid
+    @PostMapping("/setTeacher")
+    public ResponseEntity<String> setTeacherforClass(@RequestBody Map<String, Integer> request) {
+        int classId = request.get("classId");
+        int teacherId = request.get("teacherId");
+
+        return classService.setTeacherforClass(classId, teacherId);
+    }
     
 }

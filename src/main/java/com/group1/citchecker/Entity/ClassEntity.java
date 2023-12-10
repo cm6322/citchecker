@@ -7,8 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "tblclass")
@@ -29,7 +33,13 @@ public class ClassEntity {
     private String room;
     private String time;
 
-    
+    @ManyToOne
+    @JoinColumn
+    @JsonBackReference
+    private TeacherEntity teacher;
+
+    private int tid;
+
     @ManyToMany
     private List<StudentEntity> students;
 
@@ -48,12 +58,11 @@ public class ClassEntity {
         this.schedule = schedule;
         this.room = room;
         this.time = time;
-      
     }
     public List<StudentEntity> getStudents() {
         return students;
     }
-  
+
     public int getCid() {
         return cid;
     }
@@ -110,8 +119,23 @@ public class ClassEntity {
         this.time = time;
     }
 
-    public void setTeacher(TeacherEntity teacherEntity) {
-    	 
+    public TeacherEntity getTeacher() {
+        return teacher;
+    }
+    
+    public void setTeacher(TeacherEntity teacher) {
+        this.teacher = teacher;
+    }
+
+    public int getTid() {
+        if(teacher != null) {
+            return teacher.getTid();
+        } else
+        return 0;
+    }
+
+    public void setTid(int tid) {
+        this.tid = teacher.getTid();
     }
 
 	public void setStudent(StudentEntity studentEntity) {

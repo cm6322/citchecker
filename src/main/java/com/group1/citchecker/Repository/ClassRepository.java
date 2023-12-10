@@ -7,5 +7,5 @@ import com.group1.citchecker.Entity.ClassEntity;
 
 @Repository
 public interface ClassRepository extends JpaRepository <ClassEntity, Integer> {
-
+    
 }

@@ -7,11 +7,15 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.group1.citchecker.Entity.ClassEntity;
 import com.group1.citchecker.Entity.StudentEntity;
+import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Repository.ClassRepository;
 import com.group1.citchecker.Repository.StudentRepository;
+import com.group1.citchecker.Repository.TeacherRepository;
 
 
 @Service
@@ -19,16 +23,38 @@ public class ClassService {
 
     @Autowired
     private ClassRepository crepo;
-    
+
+    @Autowired
+    private TeacherRepository trepo;
+
     @Autowired
     private StudentRepository srepo;
 
     
     @Autowired
-    public ClassService(ClassRepository crepo,StudentRepository srepo) {
+    public ClassService(ClassRepository crepo, StudentRepository srepo, TeacherRepository trepo) {
         this.crepo = crepo;
         this.srepo = srepo;
-       
+        this.trepo = trepo;
+    }
+
+    //Set a Teacher for Class
+    public ResponseEntity<String> setTeacherforClass(int cid, int tid) {
+        Optional<ClassEntity> cOptional = crepo.findById(cid);
+        Optional<TeacherEntity> tOptional = trepo.findById(tid);
+
+        if (cOptional.isPresent() && tOptional.isPresent()) {
+            ClassEntity classEntity = cOptional.get();
+            TeacherEntity teacherEntity = tOptional.get();
+
+            classEntity.setTeacher(teacherEntity);
+            crepo.save(classEntity);
+
+            return new ResponseEntity<>("Teacher assigned to class successfully!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Class or Teacher not found.", HttpStatus.NOT_FOUND);
+        }
+
     }
 
     // Create or insert a class record in tblclass
@@ -39,6 +65,10 @@ public class ClassService {
     // Get all classes
     public List<ClassEntity> getAllClasses() {
         return crepo.findAll();
+    }
+
+    public ClassEntity getClassById(int cid) {
+        return crepo.findById(cid).orElse(null);
     }
 
     // Update a class record

@@ -27,6 +27,12 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+    // Get student by id
+    @GetMapping("/studentById/{sid}")
+    public StudentEntity studentById(@PathVariable int sid) {
+        return studentService.getStudentById(sid);
+    }
+
     // Update student record
     @PutMapping("/updateStudent/{sid}")
     public StudentEntity updateStudent(@PathVariable int sid, @RequestBody StudentEntity newStudentDetails) {

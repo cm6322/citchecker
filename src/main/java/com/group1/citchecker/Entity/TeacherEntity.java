@@ -1,6 +1,9 @@
 package com.group1.citchecker.Entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,8 @@ public class TeacherEntity {
     private String password;
     private String department;
 
-    @OneToMany
+    @OneToMany(mappedBy = "teacher")
+    @JsonManagedReference
     private List<ClassEntity> classes;
 
     public TeacherEntity() {
