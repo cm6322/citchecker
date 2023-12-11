@@ -34,11 +34,10 @@ public class ClassEntity {
     private String time;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "teacher_id")
     @JsonBackReference
     private TeacherEntity teacher;
 
-    private int tid;
 
     @ManyToMany
     private List<StudentEntity> students;
@@ -132,10 +131,6 @@ public class ClassEntity {
             return teacher.getTid();
         } else
         return 0;
-    }
-
-    public void setTid(int tid) {
-        this.tid = teacher.getTid();
     }
 
 	public void setStudent(StudentEntity studentEntity) {

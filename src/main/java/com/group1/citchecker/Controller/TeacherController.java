@@ -3,11 +3,8 @@ package com.group1.citchecker.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.group1.citchecker.Entity.ClassEntity;
 import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.TeacherService;
 
@@ -44,7 +41,7 @@ public class TeacherController {
     public String deleteTeacher(@PathVariable int tid) {
         return teacherService.deleteTeacher(tid);
     }
-    
+    /* 
     //Join Teacher to a class
     @PostMapping("/{tid}/joinClass")
     public ResponseEntity<String> addClassToTeacher(
@@ -60,6 +57,6 @@ public class TeacherController {
         } else {
             return new ResponseEntity<>("Teacher not found.", HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
 }

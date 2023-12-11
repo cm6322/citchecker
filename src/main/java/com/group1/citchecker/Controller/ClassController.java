@@ -2,15 +2,13 @@ package com.group1.citchecker.Controller;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.group1.citchecker.Entity.ClassEntity;
-import com.group1.citchecker.Entity.TeacherEntity;
 import com.group1.citchecker.Service.ClassService;
 
 @RestController
@@ -58,20 +56,35 @@ public class ClassController {
     public String deleteClass(@PathVariable int cid) {
         return classService.deleteClass(cid);
     }
-    @PostMapping("/{cid}/addStudents")
-    public ResponseEntity<String> addStudentsToClass(
-            @PathVariable int cid,
-            @RequestBody List<Integer> sid) {
-
+    
+    @PostMapping("/{classId}/addStudent/{studentId}")
+    public ResponseEntity<String> addStudentToClass(
+            @PathVariable int classId,
+            @PathVariable int studentId
+    ) {
         try {
-            classService.addStudentsToClass(sid, cid);
-            return ResponseEntity.ok("Students added to class successfully");
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Class not found");
+            classService.addStudentToClass(classId, studentId);
+            return new ResponseEntity<>("Student added to class successfully!", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Class or student not found!", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error adding students to class");
+            return new ResponseEntity<>("Error adding student to class: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Endpoint to remove a student from a class
+    @DeleteMapping("/{classId}/removeStudent/{studentId}")
+    public ResponseEntity<String> removeStudentFromClass(
+            @PathVariable int classId,
+            @PathVariable int studentId
+    ) {
+        try {
+            classService.removeStudentFromClass(classId, studentId);
+            return new ResponseEntity<>("Student removed from class successfully!", HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>("Class or student not found!", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error removing student from class: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     //Set Teacher for Class using tid and cid

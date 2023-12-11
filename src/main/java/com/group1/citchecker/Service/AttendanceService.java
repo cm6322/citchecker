@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.group1.citchecker.Entity.AttendanceEntity;
+import com.group1.citchecker.Entity.ClassEntity;
 import com.group1.citchecker.Repository.AttendanceRepository;
 import com.group1.citchecker.Repository.ClassRepository;
 
@@ -15,17 +16,20 @@ public class AttendanceService {
 	
 	    @Autowired
 	    private AttendanceRepository arepo;
-	    
+	    @Autowired
+		private ClassRepository crepo;
+
 	    @Autowired
 	    public AttendanceService(AttendanceRepository arepo,ClassRepository crepo) {
 	        this.arepo = arepo;
-	       
+			this.crepo = crepo;
 	    }
 	
 	  public AttendanceEntity insertAttendance(AttendanceEntity attendanceEntity) {
 	        return arepo.save(attendanceEntity);
 	    }
 
+		
 	    // Get all classes
 	    public List<AttendanceEntity> getAllAttendance() {
 	        return arepo.findAll();
@@ -48,9 +52,12 @@ public class AttendanceService {
 	        return arepo.findById(id).orElse(null);
 	    }
 
+		public void updateAttendance(AttendanceEntity attendance) {
+			arepo.save(attendance); // Assuming arepo is your AttendanceRepository
+		}
 	    //Mark the Attendance
 	    public void markAttendance(AttendanceEntity attendance) {
-	    	 try {
+	    	 /*try {
 	    	        arepo.save(attendance);
 	    	        System.out.println("Attendance marked successfully!");
 	    	    } catch (NoSuchElementException e) {
@@ -59,8 +66,30 @@ public class AttendanceService {
 	    	    } catch (Exception e) {
 	    	        System.out.println("Error marking attendance");
 	    	        throw e;
-	    	    }
-	    }
+	    	    }*/
+				
+				try {
+					// Fetch and set the ClassEntity using its ID from the AttendanceEntity
+					int classId = attendance.getClasses().getCid(); // Assuming getCid() returns the ID
+		
+					ClassEntity classEntity = crepo.findById(classId)
+							.orElseThrow(() -> new NoSuchElementException("Class not found for ID: " + classId));
+		
+					// Set the fetched ClassEntity to the attendance entity
+					attendance.setClasses(classEntity);
+		
+					// Save the AttendanceEntity with the associated ClassEntity
+					arepo.save(attendance);
+					System.out.println("Attendance marked successfully!");
+				} catch (NoSuchElementException e) {
+					System.out.println("Error marking attendance: Foreign key constraint violation. Check if the associated class exists.");
+					throw e;
+				} catch (Exception e) {
+					System.out.println("Error marking attendance: " + e.getMessage());
+					throw e;
+				}
+    }
+
 	    //Update attendance records
 		public AttendanceEntity updateAttendance(int id, AttendanceEntity newAttendanceDetails) {
 			 AttendanceEntity attendanceEntity = arepo.findById(id)
@@ -68,7 +97,7 @@ public class AttendanceService {
 
 		        // Update the record
 			 attendanceEntity.setDate(newAttendanceDetails.getDate());
-			 attendanceEntity.setPresent(newAttendanceDetails.isPresent());
+			 attendanceEntity.setPresent(newAttendanceDetails.getPresent());
 		        
 		        // Update other fields as needed
 
@@ -79,5 +108,4 @@ public class AttendanceService {
 		public List<AttendanceEntity> getAttendanceByStudentId(int sid) {
 		    return arepo.findByStudents_Sid(sid);
 		}
-	    
 }

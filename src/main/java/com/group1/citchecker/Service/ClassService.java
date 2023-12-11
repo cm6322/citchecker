@@ -97,19 +97,28 @@ public class ClassService {
             return "Class " + cid + " does not exist";
         }
     }
-    public void addStudentsToClass(List<Integer> sid, int cid) {
-        Optional<ClassEntity> optionalClass = crepo.findById(cid);
+    public void addStudentToClass(int classId, int studentId) {
+        ClassEntity classEntity = crepo.findById(classId)
+                .orElseThrow(() -> new NoSuchElementException("Class not found"));
 
-        if (optionalClass.isPresent()) {
-            ClassEntity schoolClass = optionalClass.get();
-            
-            List<StudentEntity> students = srepo.findAllById(sid);
-            schoolClass.getStudents().addAll(students);
+        StudentEntity studentEntity = srepo.findById(studentId)
+                .orElseThrow(() -> new NoSuchElementException("Student not found"));
 
-            crepo.save(schoolClass);
-        } else {
-            // Handle class not found
-            throw new EntityNotFoundException("Class with ID " + cid + " not found.");
-        }
+        // Add the student to the class and save the changes
+        classEntity.getStudents().add(studentEntity);
+        crepo.save(classEntity);
     }
+
+    public void removeStudentFromClass(int classId, int studentId) {
+        ClassEntity classEntity = crepo.findById(classId)
+                .orElseThrow(() -> new NoSuchElementException("Class not found"));
+
+        StudentEntity studentEntity = srepo.findById(studentId)
+                .orElseThrow(() -> new NoSuchElementException("Student not found"));
+
+        // Remove the student from the class and save the changes
+        classEntity.getStudents().remove(studentEntity);
+        crepo.save(classEntity);
+    }
+
 }

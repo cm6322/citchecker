@@ -10,7 +10,7 @@ public class AttendanceEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_id")
-    private int id;
+    private int aid;
 
     @ManyToOne
     @JoinColumn(name = "class_id")
@@ -30,18 +30,17 @@ public class AttendanceEntity {
         // Default constructor
     }
 
-    public AttendanceEntity(int id, LocalDate date, boolean present) {
-        this.id = id;
+    public AttendanceEntity(LocalDate date, boolean present) {
         this.date = date;
         this.present = present;
     }
 
     public int getId() {
-        return id;
+        return aid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int aid) {
+        this.aid = aid;
     }
 
     public ClassEntity getClasses() {
@@ -68,7 +67,7 @@ public class AttendanceEntity {
         this.date = date;
     }
 
-    public boolean isPresent() {
+    public boolean getPresent() {
         return present;
     }
 
